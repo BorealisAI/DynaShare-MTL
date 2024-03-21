@@ -5,19 +5,19 @@
 
 In this paper (DynaShare), we extend the task-conditioned parameter sharing approach pioneered by AdaShare, and condition parameter sharing on both the task and the intermediate feature representations. **DynaShare** learns a hierarchical gating policy consisting of a task-specific policy for coarse layer selection and gating units for individual input instances, which work together to determine the execution path at inference time. Experiments on the **NYU v2**, **Cityscapes** and **MIMIC-III** datasets demonstrate the superiority and efficiency of the proposed approach across problem domains.
 
---Here is [the link](https://openaccess.thecvf.com/content/CVPR2023W/ECV/html/Rahimian_DynaShare_Task_and_Instance_Conditioned_Parameter_Sharing_for_Multi-Task_Learning_CVPRW_2023_paper.html) for our CVPR version. 
+Here is [the link](https://openaccess.thecvf.com/content/CVPR2023W/ECV/html/Rahimian_DynaShare_Task_and_Instance_Conditioned_Parameter_Sharing_for_Multi-Task_Learning_CVPRW_2023_paper.html) for our CVPR version. 
 
 Welcome to cite our work if you find it is helpful to your research.
 ```
 @InProceedings{Rahimian_2023_CVPR,
-    author    = {Rahimian, Elahe and Javadi, Golara and Tung, Frederick and Oliveira, Gabriel},
+    author    = {Rahimian, E. and Javadi, G. and Tung, F. and Oliveira, G.},
     title     = {DynaShare: Task and Instance Conditioned Parameter Sharing for Multi-Task Learning},
     booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
     month     = {June},
     year      = {2023},
     pages     = {4535-4543}
 }
-```
+
 
 
 ##  Experiment Environment
