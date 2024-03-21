@@ -1,0 +1,68 @@
+exp_name: Census_batch450_300_warmup_200_policy_tr1.0_val_freq_100_re-train0.8_seed6 # Census_batch450_300_warmup_200_policy_tr1.0_val_freq_100_re-train0.9Census_batch450_300_warmup_200_policy_tr1.0_val_freq_100_re-train0.6_val50 #Census_batch450_300_warmup_200_policy_tr1.0_val_freq_100_re-train0.8_seed6 # Census_batch450_310_warmup_200_policy_tr1.0_val_freq_300_policy20_re-train0.6 #Census_batch450_300_warmup_200_policy_tr1.0_val_freq_100_re-train0.9 #Census_batch450_310_warmup_200_policy_tr1.0_val_freq_300_policy20_re-train0.8 # To -re-train Census_batch400_310_warmup_200_policy_tr1.0_val_freq_300_policy20 #Census_policy_learning # Census_batch512_300_warmup_100_policy_tr0.6 #Census_batch256_100_warmup_100_policy
+seed: [88, 45, 50, 100, 44, 48, 2048, 2222, 23, 12, 94, 88, 1000, 42, 77, 666]
+backbone: ResNet18 # ResNet34
+#tasks: [ multilabel sequence classification (phenotyping), regression (length-of-stay, time-series), classification task (in-hospital Mortality), time-series classification (decompensation)]
+data: 'census'
+tasks: ['income','marital','education'] #'income','marital','education', 
+tasks_num_class: [1, 1, 1] 
+lambdas: [1,1,1] #task weights, set to one in the base_env.py (get_pcba_loss) code 
+target_rates:  [1, 1, 1, 0.8, 0.8, 0.8, 0.8, 1] #[1, 1, 1, 1, 1, 1, 0.9, 1] # [1, 1, 1, 0.7, 0.7, 0.7, 0.7, 1] [1, 1, 1, 0.4, 0.4, 0.4, 0.4, 1], [1, 1, 1, 1, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 1]
+policy_model: AIG # options: task-specific(regular 1d), AIG, Dynamic, AIGDynamic
+shuffle: True
+
+alpha: 0.00001 #decay downgrad
+task_balance_method: 'None' #options: 'None', 'DWA', 'LBTW'
+
+paths:
+  log_dir: ../experiments/logs/
+  result_dir: ../experiments/results
+  checkpoint_dir: ../experiments/checkpoints
+
+
+dataload:
+  dataset: census
+  dataroot: "/home/mtl_datasets/census_dataset/"
+
+
+policy: True
+init_neg_logits:
+is_sparse: True
+is_sharing: True
+skip_layer: 0
+is_curriculum: True
+curriculum_speed: 3
+fix_BN: False
+diff_sparsity_weights: True
+retrain_from_pl: False
+
+
+train:
+  prop: 1.0 # proportion of training set used
+  batch_size: 450
+  total_iters: 500
+  warm_up_iters: 310
+  policy_learning_checking: 20
+  lr: 0.001 # 0.001
+  policy_lr: 0.01 #0.01
+  backbone_lr: 0.001 #0.001
+  reg_w: 0.001
+  reg_w_hamming: 0.05
+  targetrate_w: 25 #target rate loss weights [2,25,100]
+  print_freq: 2
+  val_freq: 50
+  decay_lr_freq: 100
+  decay_lr_rate: 0.5
+  decay_temp_freq: 1
+  init_temp: 1
+  decay_temp: 0.965
+  cw_census: 1
+  resume: False #True 
+  retrain_resume: False
+  policy_iter: best # options: warmup, latest, best
+  which_iter: latest #warmup
+  init_method: equal
+  hard_sampling: False
+  
+
+test:
+  which_iter: best

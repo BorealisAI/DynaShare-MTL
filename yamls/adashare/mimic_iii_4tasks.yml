@@ -1,0 +1,65 @@
+exp_name:  mimiciii_4Task_dy
+seed: [88, 45, 50, 100, 44, 48, 2048, 2222, 23, 12, 94, 88, 1000, 42, 77, 666]
+backbone: ResNet18
+#tasks: [ multilabel sequence classification (phenotyping), regression (length-of-stay, time-series), classification task (in-hospital Mortality), time-series classification (decompensation)]
+tasks: ['pheno','los','decomp','ihm']  
+tasks_num_class: [25, 10, 1, 1]
+lambdas: [1, 1, 1, 1] #task weights
+policy_model: Dynamic # options: task-specific(regular 1d), AIG, Dynamic, AIGDynamic
+
+
+paths:
+  log_dir: ../experiments/logs/
+  result_dir: ../experiments/results
+  checkpoint_dir: ../experiments/checkpoints
+
+
+dataload:
+  dataset: mimic
+  dataroot: "/home/MTL/data/mimiciii"
+
+
+policy: True
+init_neg_logits:
+is_sparse: True
+is_sharing: True
+skip_layer: 0
+is_curriculum: True
+curriculum_speed: 3
+fix_BN: False
+diff_sparsity_weights: True
+retrain_from_pl: False
+
+
+train:
+  prop: 1.0 # proportion of training set used
+  seqlen: 170
+  batch_size: 256
+  total_iters: 150
+  warm_up_iters: 50
+  lr: 0.001
+  policy_lr: 0.01
+  backbone_lr: 0.001
+  reg_w: 0.001
+  reg_w_hamming: 0.05
+  print_freq: 2
+  val_freq: 10
+  decay_lr_freq: 50
+  decay_lr_rate: 0.5
+  decay_temp_freq: 5
+  init_temp: 5
+  decay_temp: 0.965
+  cw_pheno: 5.0 #class weights
+  cw_decomp: 25.0
+  cw_ihm: 5.0
+  cw_los: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  resume: False #True 
+  retrain_resume: False
+  policy_iter: best # options: warmup, latest, best
+  which_iter: latest #warmup
+  init_method: equal
+  hard_sampling: False
+  
+
+test:
+  which_iter: best
